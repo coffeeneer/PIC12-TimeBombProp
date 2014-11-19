@@ -6,13 +6,12 @@
 #include "user.h"
 #include "timer.h"
 
-int min = MINUTES;
-int sec = SECONDS;
+char min = MINUTES;
+char sec = SECONDS;
 int ms = MILLISECONDS;
 unsigned char poof = false;
 
-void InitApp(void)
-{
+void InitApp(void) {
     void initInterrupt();
     void timerInit();
     void ioInit();
@@ -21,6 +20,27 @@ void InitApp(void)
 void ioInit(void) {
     GPIO = 0;
     TRISIO = 0b00101000;
+}
+
+void outputTime(void){
+    unsigned int data;
+    unsigned int temp;
+    temp = ms;
+    data = ms/100;
+    temp -= temp/100;
+    data << 4;
+    data |= temp/10;
+    temp -= temp/10;
+    temp = sec;
+    data << 4;
+    data |= temp/10;
+    temp -= temp/10;
+    data << 4;
+    data |= temp;
+    temp = min;
+    data << 4;
+    data |= min;
+    shiftData(data);
 }
 
 void shiftData(unsigned int data){

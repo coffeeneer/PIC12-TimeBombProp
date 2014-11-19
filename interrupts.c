@@ -3,8 +3,8 @@
 #include <stdint.h>         /* For uint8_t definition */
 #include <stdbool.h>        /* For true/false definition */
 #include "interrupts.h"
-extern int min;
-extern int sec;
+extern char min;
+extern char sec;
 extern int ms;
 extern unsigned char poof;
 

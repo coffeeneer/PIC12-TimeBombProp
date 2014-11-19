@@ -12,5 +12,6 @@
 void InitApp(void);         /* I/O and Peripheral Initialization */
 void ioInit(void);
 void shiftData(unsigned int data);
+void outputTime(void);
 
 #endif
