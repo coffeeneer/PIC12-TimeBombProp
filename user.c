@@ -6,8 +6,8 @@
 #include "user.h"
 #include "timer.h"
 
-char min = MINUTES;
-char sec = SECONDS;
+short min = MINUTES;
+short sec = SECONDS;
 int ms = MILLISECONDS;
 unsigned char poof = false;
 
@@ -48,7 +48,7 @@ void shiftData(unsigned int data){
         DATA = data & 1;
         CLOCK = 1;
         CLOCK = 0;
-        data >> 1;
+        data = data >> 1;
     }
     STORAGE = 1;
     STORAGE = 0;
