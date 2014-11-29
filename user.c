@@ -6,49 +6,29 @@
 #include "user.h"
 #include "timer.h"
 
-short min = MINUTES;
-short sec = SECONDS;
-int ms = MILLISECONDS;
-unsigned char poof = false;
-
-void InitApp(void) {
-    void initInterrupt();
-    void timerInit();
-    void ioInit();
-}
+volatile unsigned long time = TIME;
+bit poof = false;
 
 void ioInit(void) {
+    CMCON = 0x7;
     GPIO = 0;
-    TRISIO = 0b00101000;
+    TRISIO = 0b00101100;
 }
 
 void outputTime(void){
-    unsigned int data;
-    unsigned int temp;
-    temp = ms;
-    data = ms/100;
-    temp -= temp/100;
-    data << 4;
-    data |= temp/10;
-    temp -= temp/10;
-    temp = sec;
-    data << 4;
-    data |= temp/10;
-    temp -= temp/10;
-    data << 4;
-    data |= temp;
-    temp = min;
-    data << 4;
-    data |= min;
-    shiftData(data);
+    /*Hier de vertaling van de time variabele die de tijd in tienden msec
+     bijhoudt naar een variabele met de data in BCD format als volgt:
+     0xTIENTALMILLISECONDEN;HONDERDTALMILLISECONDEN;SECONDEN;TIENTALSECONDEN;MINUTEN*/
+    shiftData((unsigned short long)time); //uitshiften van de data
 }
 
-void shiftData(unsigned int data){
+void shiftData(unsigned short long data){
     for(int i = 0; i < 20; i++) {
-        DATA = data & 1;
+        if(data & (0x80000)) DATA = 1;
+        else DATA = 0;
         CLOCK = 1;
         CLOCK = 0;
-        data = data >> 1;
+        data = data << 1;
     }
     STORAGE = 1;
     STORAGE = 0;

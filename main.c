@@ -8,10 +8,16 @@
 
 #include "system.h"        /* System funct/params, like osc/peripheral config */
 #include "user.h"          /* User funct/params, such as InitApp */
+extern unsigned short long time;
+extern bit poof;
 
 void main(void) {
-    InitApp();
-    while(1){
+    ioInit();
+    timerInit();
+    initInterrupt();
+    while(!poof){
         outputTime();
     }
+    shiftData(0x80081);
+    while(0);
 }
